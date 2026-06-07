@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Boxing Tracker">
+<title>Boxing Attendance Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loading-overlay">
+  <div style="font-size:32px">🥊</div>
+  <div class="spinner"></div>
+  <div style="font-size:13px;color:var(--text3)">Connecting to cloud…</div>
+</div>
+<div id="app">
+  <div id="header">
+    <div id="header-logo-fallback">BX</div>
+    <h1>Boxing Tracker</h1>
+    <div id="sync-status"><div id="sync-dot"></div><span id="sync-label">connecting</span></div>
+  </div>
+  <div id="content">
+    <section id="sec-home" class="active"></section>
+    <section id="sec-counter"></section>
+    <section id="sec-history"></section>
+    <section id="sec-stats"></section>
+  </div>
+  <nav id="nav">
+    <button class="nav-btn active" data-screen="home" onclick="navigate('home')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" data-screen="counter" onclick="navigate('counter')"><span class="nav-icon">🥊</span><span>Counter</span></button>
+    <button class="nav-btn" data-screen="history" onclick="navigate('history')"><span class="nav-icon">📋</span><span>History</span></button>
+    <button class="nav-btn" data-screen="stats" onclick="navigate('stats')"><span class="nav-icon">📊</span><span>Stats</span></button>
+  </nav>
+</div>
+<div id="toast"></div>
+<script src="app.js" type="module"></script>
+</body>
+</html>
