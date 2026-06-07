@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Boxing Tracker">
 <title>Boxing Attendance Tracker</title>
-<link rel="manifest" href="#" id="manifest-link">
+<link rel="manifest" href="manifest.json" id="manifest-link">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -472,9 +472,11 @@ function registerSW(){
 
 async function init(){
   await openDB();
-  injectManifest();
-  registerSW();
   renderHome();
+  // register static service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
   const img=new Image();
   img.onload=()=>{
     const fb=document.getElementById('header-logo-fallback');
