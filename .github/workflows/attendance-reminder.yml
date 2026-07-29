@@ -1,0 +1,41 @@
+name: Missing attendance reminder
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Check without sending email
+        required: false
+        default: true
+        type: boolean
+
+concurrency:
+  group: attendance-reminder
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check-attendance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FIREBASE_PROJECT_ID: boxing-tracker-8fab1
+      FIREBASE_API_KEY: AIzaSyD5m5QOdKK6Vy5Sr0HWciuviy0rAlvsik8
+      REMINDER_TO: alphalimaboxing@gmail.com
+      TRACKER_URL: https://alaadriai.github.io/boxing-attendance-tracker/
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: "465"
+      SMTP_USERNAME: alphalimaboxing@gmail.com
+      SMTP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check attendance and send reminder
+        run: python scripts/check_attendance_reminders.py
