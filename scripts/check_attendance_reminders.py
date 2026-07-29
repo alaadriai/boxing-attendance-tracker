@@ -163,6 +163,37 @@ def send_email(course: Course, course_date: date, deadline: datetime) -> None:
         smtp.send_message(message)
 
 
+def send_test_email(now: datetime) -> None:
+    recipient = env("REMINDER_TO")
+    sender = env("SMTP_USERNAME")
+    password = env("SMTP_PASSWORD")
+    tracker_url = env(
+        "TRACKER_URL",
+        "https://alaadriai.github.io/boxing-attendance-tracker/",
+    )
+
+    message = EmailMessage()
+    message["From"] = sender
+    message["To"] = recipient
+    message["Subject"] = "Boxing attendance reminder test"
+    message.set_content(
+        "\n".join(
+            (
+                "The boxing attendance reminder is configured correctly.",
+                "",
+                f"Tested: {now:%d.%m.%Y at %H:%M} (Europe/Berlin)",
+                f"Tracker: {tracker_url}",
+            )
+        )
+    )
+
+    host = env("SMTP_HOST", "smtp.gmail.com")
+    port = int(env("SMTP_PORT", "465"))
+    with smtplib.SMTP_SSL(host, port, context=ssl.create_default_context()) as smtp:
+        smtp.login(sender, password)
+        smtp.send_message(message)
+
+
 def mark_sent(course: Course, course_date: date, sent_at: datetime) -> None:
     payload = {
         "fields": {
@@ -183,6 +214,12 @@ def mark_sent(course: Course, course_date: date, sent_at: datetime) -> None:
 def main() -> int:
     now = now_berlin()
     dry_run = os.environ.get("DRY_RUN", "").lower() in {"1", "true", "yes"}
+    send_test = os.environ.get("SEND_TEST_EMAIL", "").lower() in {"1", "true", "yes"}
+    if send_test:
+        send_test_email(now)
+        print(f"SENT: test email to {env('REMINDER_TO')}")
+        return 0
+
     sessions = fetch_sessions()
     candidates = due_courses(now)
     print(f"Checking at {now.isoformat()}; due courses: {len(candidates)}")

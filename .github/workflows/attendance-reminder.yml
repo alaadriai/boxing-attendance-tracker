@@ -10,6 +10,11 @@ on:
         required: false
         default: true
         type: boolean
+      send_test_email:
+        description: Send a test email immediately
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: attendance-reminder
@@ -32,6 +37,7 @@ jobs:
       SMTP_USERNAME: alphalimaboxing@gmail.com
       SMTP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
       DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+      SEND_TEST_EMAIL: ${{ github.event_name == 'workflow_dispatch' && inputs.send_test_email || 'false' }}
 
     steps:
       - name: Check out repository
