@@ -387,7 +387,7 @@ window.doCSV=function(){
 /* ── FIRESTORE LIVE SYNC ── */
 setSync('load');
 onSnapshot(query(col,orderBy('ts','desc')),snap=>{
-  sessions=snap.docs.map(d=>({id:d.id,...d.data()})).filter(s=>s.type!=='reminder');
+  sessions=snap.docs.map(d=>({id:d.id,...d.data()}));
   setSync('ok');
   if(cur==='history')renderHistory(hFil);
   if(cur==='stats')renderStats();
