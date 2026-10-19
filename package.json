@@ -1,0 +1,9 @@
+{
+  "name": "arete-boxing-tracker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/core.test.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}
