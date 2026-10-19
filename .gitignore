@@ -1,0 +1,5 @@
+node_modules/
+test-results/
+.local-server.log
+.local-server-error.log
+registration_people*.json
