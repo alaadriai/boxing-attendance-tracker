@@ -57,6 +57,26 @@ Billing JSON includes the complete selected configuration, source records,
 calendar weeks, review reasons, and unresolved count. It does not create or send
 official forms or emails. Existing billing/registration automations are unchanged.
 
+## Private registration lists
+
+The People view imports `registration_people_private.json` from the local
+registration archive. It searches names, filters real teaching slots through
+their HSZ listing numbers and period dates, and shows earlier same-name
+registrations, both-day registrations, Plus listings, and PDF snapshot dates.
+Latest snapshots determine the current list; historical snapshots remain
+available in a person's registration history. These are registration records,
+not individual attendance or proof of Plus-course password authorization.
+
+The imported file stays in browser localStorage on that device. It is not sent
+to Firebase, checked into GitHub, or included in the attendance backup. Import
+the latest private file on each device after the registration archive changes.
+The People view displays the source snapshot date and offers removal of the
+device's local copy. Automatic cross-device name syncing is not enabled.
+
+The sibling registration importer now emits the private JSON bundle alongside
+the existing workbook on each export. Its standalone exporter reads SQLite in
+read-only mode. Existing XLSX/CSV/raw-PDF archive behavior is unchanged.
+
 ## Saving and connectivity
 
 Drafts are saved to localStorage on every change, including date/course context.
