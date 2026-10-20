@@ -80,6 +80,17 @@ input::placeholder,textarea::placeholder{color:#829087;opacity:1}
 .person-row:hover>.icon-button{background:#2a392c;border-color:#425443;color:#d7e6d3}
 .person-history{padding:19px 0;border-top-color:#374439}
 dialog{background:#1d261f;border-color:#435446;box-shadow:0 20px 80px #0006}
+[hidden]{display:none!important}
+.access-gate{min-height:100svh;display:grid;place-items:center;padding:40px 24px;background:#151a17}
+.access-content{width:min(100%,340px)}
+.access-logo{display:block;width:190px;height:auto;margin:0 0 36px}
+.access-content h1{font-size:42px;line-height:1.1;margin:10px 0 32px;letter-spacing:0}
+.access-content form{display:grid;gap:20px}
+.access-content .field{display:grid;gap:10px}
+.access-content input{width:100%;min-height:56px;text-align:center;font-size:28px;font-variant-numeric:tabular-nums;letter-spacing:0}
+.access-content button{min-height:50px;width:100%;justify-content:center}
+.access-error{margin:0;font-size:14px;line-height:1.5;color:#efb5b0}
+@media(max-width:360px){.topbar-actions{gap:5px}.topbar-actions .icon-button{width:30px;height:32px}.topbar-actions .sync{font-size:9px}}
 @media(max-width:760px){
   .brand{padding-bottom:0}
   .nav-link{border:0;border-radius:5px;padding:6px 2px;gap:5px;font-size:10px;min-height:54px;justify-content:flex-start}

@@ -57,25 +57,44 @@ Billing JSON includes the complete selected configuration, source records,
 calendar weeks, review reasons, and unresolved count. It does not create or send
 official forms or emails. Existing billing/registration automations are unchanged.
 
-## Private registration lists
+## Shared registration lists and access PIN
 
-The People view imports `registration_people_private.json` from the local
-registration archive. It searches names, filters real teaching slots through
+The People view automatically loads the published registration archive after
+the access PIN is entered, on any device. It searches names, filters real teaching slots through
 their HSZ listing numbers and period dates, and shows earlier same-name
 registrations, both-day registrations, Plus listings, and PDF snapshot dates.
 Latest snapshots determine the current list; historical snapshots remain
 available in a person's registration history. These are registration records,
 not individual attendance or proof of Plus-course password authorization.
 
-The imported file stays in browser localStorage on that device. It is not sent
-to Firebase, checked into GitHub, or included in the attendance backup. Import
-the latest private file on each device after the registration archive changes.
-The People view displays the source snapshot date and offers removal of the
-device's local copy. Automatic cross-device name syncing is not enabled.
+`registry.enc.json` is a shared AES-GCM archive, using PBKDF2-SHA256 with a
+random salt and 600,000 iterations. Names are readable normally in the app
+after unlock; no raw names file is committed. An unlock lasts for the current
+browser tab session, up to twelve hours. The lock button clears that session.
+The People view shows the source snapshot date and has a refresh button.
+
+This is a convenience PIN gate on public static hosting, NOT account-based
+authorization or strong privacy. A four-digit PIN can be guessed offline;
+anyone who knows it can read the registry. Existing Firebase attendance rules
+are unchanged and are not protected by this frontend gate. The PIN and
+encryption are not a substitute for backend authentication and access rules.
+The isolated `?demo=1` preview bypasses the gate but never loads the shared
+names archive or connects to Firebase.
 
 The sibling registration importer now emits the private JSON bundle alongside
 the existing workbook on each export. Its standalone exporter reads SQLite in
 read-only mode. Existing XLSX/CSV/raw-PDF archive behavior is unchanged.
+After a registration import/export, the configured local publishing hook
+updates only `registry.enc.json` on GitHub `main`, triggering GitHub Pages.
+Unchanged source snapshots skip publication. Failure is reported explicitly;
+no local archive is deleted. GitHub credentials use the existing Git credential
+helper and are never embedded in the app. The local PIN configuration remains
+outside the public AttendanceApp repository.
+
+For manual publication, set `ARETE_REGISTRY_PIN` in the process environment and
+run `node scripts/publish-registry.mjs --source <private-json-path> --publish`.
+Omit `--publish` to prepare the local asset for a normal app deployment.
+The demo retains its isolated local file importer for synthetic tests only.
 
 ## Saving and connectivity
 
@@ -95,7 +114,7 @@ The service worker caches the app shell after a successful online visit. Cold
 offline launches can use cached records and retain new edits locally; initial
 installation, fonts, Firebase modules, and server sync need connectivity. Cached
 records are not an independent archive: keep the JSON/CSV backups and OneDrive
-workflow. Participant names and course passwords are not added to this public
+workflow. Plaintext participant names and course passwords are not added to this public
 frontend repository.
 
 ## Verification

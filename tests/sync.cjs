@@ -31,10 +31,14 @@ export const runTransaction=async(_,fn)=>{
     await context.route('https://www.gstatic.com/firebasejs/**/firebase-app.js',route=>route.fulfill({contentType:'text/javascript',body:'export const initializeApp=()=>({});export const getApps=()=>[];'}));
     await context.route('https://www.gstatic.com/firebasejs/**/firebase-firestore.js',route=>route.fulfill({contentType:'text/javascript',body:mockFirestore}));
     await context.route(/firestore\.googleapis\.com/,route=>route.abort());
+    const {encryptRegistry}=await import('../registry-crypto.mjs');
+    const encrypted=await encryptRegistry({kind:'arete-registration-registry',schemaVersion:1,sources:[]},'0000');
+    await context.route('**/registry.enc.json',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(encrypted)}));
     const page=await context.newPage();page.setDefaultTimeout(15000);
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
     await page.clock.install({time:new Date('2026-10-19T18:20:00Z')});
     await page.goto(base);
+    await page.locator('#access-pin').fill('0000');await page.getByRole('button',{name:'Unlock',exact:true}).click();
     await page.waitForFunction(()=>document.querySelector('#headcount')?.value==='21');
     await page.locator('#headcount').fill('22');await page.locator('#save-session').click();
     await page.waitForFunction(()=>window.__mock.records.get('legacy-1').count===22);

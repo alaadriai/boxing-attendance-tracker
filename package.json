@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/core.test.mjs tests/people.test.mjs",
+    "test": "node --test tests/core.test.mjs tests/people.test.mjs tests/access.test.mjs",
     "serve": "node scripts/serve.mjs"
   }
 }

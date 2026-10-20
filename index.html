@@ -12,10 +12,22 @@
   <link rel="icon" href="arete-logo.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <script src="vendor/lucide.min.js" defer></script>
-  <script src="app.mjs" type="module"></script>
+  <script src="gate.mjs" type="module"></script>
 </head>
 <body>
-  <div class="app-shell">
+  <section id="access-gate" class="access-gate" aria-labelledby="access-title">
+    <div class="access-content">
+      <img src="arete-logo.png" alt="ARETE Advisory" class="access-logo" width="800" height="494">
+      <div class="eyebrow">ALAA'S CORNER</div>
+      <h1 id="access-title">Boxing</h1>
+      <form id="unlock-form">
+        <label class="field" for="access-pin"><span>Access PIN</span><input id="access-pin" class="input" type="password" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" minlength="4" autocomplete="off" required aria-describedby="access-error"></label>
+        <p id="access-error" class="access-error" role="alert" hidden></p>
+        <button class="button primary" type="submit">Unlock</button>
+      </form>
+    </div>
+  </section>
+  <div class="app-shell" hidden>
     <aside class="sidebar">
       <a class="brand" href="#desk" aria-label="ARETE Boxing session desk">
         <img src="arete-logo.png" alt="ARETE Advisory" width="800" height="494">
@@ -28,7 +40,7 @@
     <div class="main-shell">
       <header class="topbar">
         <span class="workspace-name">Alaa's corner <span>/</span> <span id="page-label">Session desk</span></span>
-        <div class="topbar-actions"><span id="sync" class="sync" role="status">Connecting</span><button id="retry-sync" class="icon-button" title="Retry sync" aria-label="Retry sync" hidden><i data-lucide="refresh-cw"></i></button><button class="icon-button" data-view="settings" title="Course settings" aria-label="Course settings"><i data-lucide="sliders-horizontal"></i></button></div>
+        <div class="topbar-actions"><span id="sync" class="sync" role="status">Connecting</span><button id="retry-sync" class="icon-button" title="Retry sync" aria-label="Retry sync" hidden><i data-lucide="refresh-cw"></i></button><button id="lock-app" class="icon-button" title="Lock app" aria-label="Lock app"><i data-lucide="lock-keyhole"></i></button><button class="icon-button" data-view="settings" title="Course settings" aria-label="Course settings"><i data-lucide="sliders-horizontal"></i></button></div>
       </header>
       <main id="main" tabindex="-1"><div class="loading">Opening your corner...</div></main>
       <footer class="footer"><span>ARETE / Boxing</span><span>Personal coaching workspace</span></footer>
